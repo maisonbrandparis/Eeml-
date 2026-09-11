@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin · Les Enfants de l'École Marguerite Long</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fond:#1B1E23;--carte:#23272E;--bord:#333942;
+  --texte:#E9E7DF;--gris:#9AA2AE;
+  --rouge:#FF8B7E;--bleu:#7FB2F0;--vert:#8FD9A8;--jaune:#FFD979;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Karla',system-ui,sans-serif;background:var(--fond);color:var(--texte);
+  font-size:16px;line-height:1.55;padding:1rem;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto}
+
+h1{font-family:'Caveat',cursive;font-size:2.4rem;line-height:1;font-weight:700}
+.sous{color:var(--gris);font-size:.9rem;margin-bottom:1.4rem}
+
+/* connexion */
+#login{max-width:340px;margin:14vh auto 0}
+input{
+  width:100%;padding:.75rem .9rem;font:inherit;color:var(--texte);
+  background:var(--carte);border:1px solid var(--bord);border-radius:8px;margin-top:.9rem;
+}
+button{
+  width:100%;padding:.75rem;margin-top:.8rem;font:inherit;font-weight:700;cursor:pointer;
+  background:var(--rouge);color:#1B1E23;border:none;border-radius:8px;
+}
+button.secondaire{background:transparent;color:var(--gris);border:1px solid var(--bord)}
+.err{color:var(--rouge);font-size:.88rem;margin-top:.7rem;min-height:1.2em}
+
+/* chiffres */
+.chiffres{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:1.4rem}
+.kpi{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:.9rem 1rem}
+.kpi b{display:block;font-family:'Caveat',cursive;font-size:2.6rem;line-height:.95;color:var(--jaune)}
+.kpi span{font-size:.8rem;color:var(--gris)}
+
+.carte{background:var(--carte);border:1px solid var(--bord);border-radius:10px;padding:1rem 1.1rem;margin-bottom:1rem}
+.carte h2{font-family:'Caveat',cursive;font-size:1.6rem;font-weight:700;margin-bottom:.6rem}
+
+/* graphe */
+.graphe{display:flex;align-items:flex-end;gap:3px;height:130px;margin-top:.4rem}
+.graphe i{flex:1;background:var(--bleu);border-radius:2px 2px 0 0;min-height:2px;opacity:.85;position:relative}
+.graphe i:hover{opacity:1;background:var(--jaune)}
+.axe{display:flex;justify-content:space-between;font-size:.72rem;color:var(--gris);margin-top:.35rem}
+
+/* listes */
+.barres div{margin-bottom:.5rem}
+.barres .l{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:.15rem;gap:1rem}
+.barres .l span:last-child{color:var(--gris);white-space:nowrap}
+.barres .b{height:7px;background:#2E343D;border-radius:4px;overflow:hidden}
+.barres .b i{display:block;height:100%;background:var(--vert);border-radius:4px}
+
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th,td{text-align:left;padding:.4rem .3rem;border-bottom:1px solid var(--bord)}
+th{color:var(--gris);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.vide{color:var(--gris);font-size:.9rem;font-style:italic}
+.pied{display:flex;gap:.6rem;margin-top:1.2rem}
+.pied button{margin-top:0}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <h1>Admin</h1>
+  <div class="sous">Les Enfants de l'École Marguerite Long</div>
+  <input id="mdp" type="password" placeholder="Mot de passe" autocomplete="current-password">
+  <button id="entrer">Entrer</button>
+  <div class="err" id="err"></div>
+</div>
+
+<div class="wrap" id="tableau" hidden>
+  <h1>Statistiques du site</h1>
+  <div class="sous" id="maj"></div>
+
+  <div class="chiffres">
+    <div class="kpi"><b id="k-auj">0</b><span>vues aujourd'hui</span></div>
+    <div class="kpi"><b id="k-7j">0</b><span>vues sur 7 jours</span></div>
+    <div class="kpi"><b id="k-tot">0</b><span>vues au total</span></div>
+    <div class="kpi"><b id="k-vis">0</b><span>visiteurs uniques</span></div>
+    <div class="kpi"><b id="k-vis7">0</b><span>visiteurs sur 7 jours</span></div>
+  </div>
+
+  <div class="carte">
+    <h2>30 derniers jours</h2>
+    <div class="graphe" id="g-jours"></div>
+    <div class="axe"><span id="ax-deb"></span><span id="ax-fin"></span></div>
+  </div>
+
+  <div class="carte">
+    <h2>D'où viennent-ils</h2>
+    <div class="barres" id="l-sources"></div>
+  </div>
+
+  <div class="carte">
+    <h2>Sur quoi ils cliquent</h2>
+    <div class="barres" id="l-clics"></div>
+  </div>
+
+  <div class="carte">
+    <h2>Téléphone ou ordinateur</h2>
+    <div class="barres" id="l-appareils"></div>
+  </div>
+
+  <div class="carte">
+    <h2>Heures de visite</h2>
+    <div class="graphe" id="g-heures" style="height:90px"></div>
+    <div class="axe"><span>0h</span><span>12h</span><span>23h</span></div>
+  </div>
+
+  <div class="carte">
+    <h2>Les 25 dernières visites</h2>
+    <table><thead><tr><th>Quand</th><th>Appareil</th><th>Source</th></tr></thead>
+    <tbody id="t-dern"></tbody></table>
+  </div>
+
+  <div class="pied">
+    <button id="refresh" class="secondaire">Actualiser</button>
+    <button id="chmdp" class="secondaire">Changer le mot de passe</button>
+    <button id="sortir" class="secondaire">Se déconnecter</button>
+  </div>
+</div>
+
+<script>
+const SB='https://bxdnxnwbslykpgfsdltg.supabase.co';
+const KEY='sb_publishable_gG8DLCGoOZ1fUBBx566k1w_BlW-eZth';
+let mdp='';
+
+async function rpc(fn, body){
+  const r=await fetch(SB+'/rest/v1/rpc/'+fn,{method:'POST',
+    headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
+    body:JSON.stringify(body)});
+  if(!r.ok){ throw new Error((await r.json().catch(()=>({}))).message||'erreur'); }
+  return r.json();
+}
+
+const $=i=>document.getElementById(i);
+const n=v=>(v||0).toLocaleString('fr-FR');
+
+function barres(el,items,couleur){
+  if(!items||!items.length){el.innerHTML='<div class="vide">Rien pour le moment.</div>';return;}
+  const max=Math.max(...items.map(i=>i.n))||1;
+  el.innerHTML=items.map(i=>
+    '<div><div class="l"><span>'+escapeH(i.nom)+'</span><span>'+n(i.n)+'</span></div>'+
+    '<div class="b"><i style="width:'+Math.max(3,i.n/max*100)+'%;background:'+couleur+'"></i></div></div>'
+  ).join('');
+}
+function escapeH(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function dessiner(d){
+  $('k-auj').textContent=n(d.aujourdhui);
+  $('k-7j').textContent=n(d.sept_jours);
+  $('k-tot').textContent=n(d.total);
+  $('k-vis').textContent=n(d.visiteurs);
+  $('k-vis7').textContent=n(d.visiteurs_7j);
+  $('maj').textContent='Mis à jour à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+
+  const j=d.par_jour||[];
+  const maxj=Math.max(1,...j.map(x=>x.vues));
+  $('g-jours').innerHTML=j.map(x=>
+    '<i style="height:'+Math.max(2,x.vues/maxj*100)+'%" title="'+x.jour+' : '+x.vues+' vues"></i>').join('');
+  if(j.length){
+    $('ax-deb').textContent=j[0].jour.slice(8)+'/'+j[0].jour.slice(5,7);
+    $('ax-fin').textContent=j[j.length-1].jour.slice(8)+'/'+j[j.length-1].jour.slice(5,7);
+  }
+
+  barres($('l-sources'),d.sources,'var(--bleu)');
+  barres($('l-clics'),d.clics,'var(--jaune)');
+  barres($('l-appareils'),d.appareils,'var(--vert)');
+
+  const h=new Array(24).fill(0);
+  (d.heures||[]).forEach(x=>h[x.h]=x.n);
+  const maxh=Math.max(1,...h);
+  $('g-heures').innerHTML=h.map((v,i)=>
+    '<i style="height:'+Math.max(2,v/maxh*100)+'%;background:var(--rouge)" title="'+i+'h : '+v+'"></i>').join('');
+
+  const t=d.dernieres||[];
+  $('t-dern').innerHTML=t.length
+    ? t.map(x=>'<tr><td>'+escapeH(x.quand)+'</td><td>'+escapeH(x.appareil)+'</td><td>'+escapeH(x.source)+'</td></tr>').join('')
+    : '<tr><td colspan="3" class="vide">Aucune visite enregistrée.</td></tr>';
+}
+
+async function charger(){
+  const d=await rpc('eeml_stats',{mdp:mdp});
+  $('login').hidden=true; $('tableau').hidden=false;
+  dessiner(d);
+}
+
+$('entrer').onclick=async()=>{
+  mdp=$('mdp').value; $('err').textContent='';
+  try{ await charger(); sessionStorage.setItem('eeml_admin',mdp); }
+  catch(e){ $('err').textContent='Mot de passe incorrect.'; }
+};
+$('mdp').addEventListener('keydown',e=>{if(e.key==='Enter')$('entrer').click();});
+$('refresh').onclick=()=>charger().catch(()=>{});
+$('sortir').onclick=()=>{sessionStorage.removeItem('eeml_admin');location.reload();};
+$('chmdp').onclick=async()=>{
+  const nv=prompt('Nouveau mot de passe, 8 caractères minimum');
+  if(!nv)return;
+  try{ await rpc('eeml_change_mdp',{ancien:mdp,nouveau:nv}); mdp=nv;
+       sessionStorage.setItem('eeml_admin',nv); alert('Mot de passe changé.'); }
+  catch(e){ alert('Échec : '+e.message); }
+};
+
+(function(){
+  const m=sessionStorage.getItem('eeml_admin');
+  if(m){ mdp=m; charger().catch(()=>sessionStorage.removeItem('eeml_admin')); }
+})();
+</script>
+</body>
+</html>

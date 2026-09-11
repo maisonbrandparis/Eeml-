@@ -572,5 +572,48 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
        lg.textContent='Le scrutin est passé. Les comptes rendus arrivent ici.';}
 })();
 </script>
+
+<script>
+(function(){
+  var SB='https://bxdnxnwbslykpgfsdltg.supabase.co';
+  var KEY='sb_publishable_gG8DLCGoOZ1fUBBx566k1w_BlW-eZth';
+  var sid;
+  try{
+    sid=sessionStorage.getItem('eeml_sid');
+    if(!sid){sid=Math.random().toString(36).slice(2)+Date.now().toString(36);sessionStorage.setItem('eeml_sid',sid);}
+  }catch(e){sid='anon'+Date.now();}
+  function appareil(){
+    var u=navigator.userAgent;
+    if(/iPad|Tablet/i.test(u))return 'tablette';
+    if(/Mobi|Android|iPhone/i.test(u))return 'mobile';
+    return 'ordinateur';
+  }
+  function envoyer(ev,chemin){
+    try{
+      var d={evenement:ev,chemin:chemin||location.pathname,session_id:sid,
+             appareil:appareil(),
+             referent:(document.referrer||'').replace(/^https?:\/\//,'').split('/')[0],
+             pays:(Intl.DateTimeFormat().resolvedOptions().timeZone||'')};
+      fetch(SB+'/rest/v1/eeml_visites',{method:'POST',keepalive:true,
+        headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=minimal'},
+        body:JSON.stringify(d)});
+    }catch(e){}
+  }
+  envoyer('vue');
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a');
+    if(!a)return;
+    var h=a.getAttribute('href')||'';
+    if(h.indexOf('mailto:')===0)envoyer('clic','mail');
+    else if(h.indexOf('tel:')===0)envoyer('clic','telephone');
+    else if(h.indexOf('chat.whatsapp.com')>-1)envoyer('clic','whatsapp');
+    else if(h.charAt(0)==='#')envoyer('clic','section '+h);
+  },true);
+  var ouvert=false;
+  document.addEventListener('click',function(){
+    if(ouvert)return; ouvert=true; envoyer('clic','ouverture du cahier');
+  },{once:false});
+})();
+</script>
 </body>
 </html>
