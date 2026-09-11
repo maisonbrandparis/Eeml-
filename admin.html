@@ -90,6 +90,14 @@ th{color:var(--gris);font-weight:600;font-size:.78rem;text-transform:uppercase;l
     <div class="kpi"><b id="k-vis7">0</b><span>visiteurs sur 7 jours</span></div>
     <div class="kpi"><b id="k-tot">0</b><span>vues au total</span></div>
     <div class="kpi"><b id="k-vis">0</b><span>visiteurs uniques</span></div>
+    <div class="kpi"><b id="k-tmoy">0</b><span>temps moyen sur le site</span></div>
+    <div class="kpi"><b id="k-tmed">0</b><span>temps median</span></div>
+    <div class="kpi"><b id="k-tmax">0</b><span>plus longue visite</span></div>
+  </div>
+
+  <div class="carte">
+    <h2>Combien de temps ils restent</h2>
+    <div class="barres" id="l-engagement"></div>
   </div>
 
   <div class="carte">
@@ -136,8 +144,8 @@ th{color:var(--gris);font-weight:600;font-size:.78rem;text-transform:uppercase;l
 
   <div class="carte">
     <h2>Les 30 dernières visites</h2>
-    <table><thead><tr><th>Quand</th><th>Qui</th><th>Ville</th><th>Appareil</th><th>Source</th></tr></thead>
-    <tbody id="t-dern"></tbody></table>
+    <div style="overflow-x:auto"><table><thead><tr><th>Quand</th><th>Qui</th><th>Ville</th><th>Durée</th><th>IP</th><th>Appareil</th><th>Source</th></tr></thead>
+    <tbody id="t-dern"></tbody></table></div>
   </div>
 
   <div class="pied">
@@ -202,6 +210,11 @@ function dessiner(d){
     {nom:'Nouveaux visiteurs',n:d.nouveaux_auj||0},
     {nom:'Déjà venus avant',n:d.retours_auj||0}
   ],'var(--rouge)');
+  const dur=v=>{v=v||0;return v<60?v+' s':Math.floor(v/60)+' min '+(v%60)+' s';};
+  $('k-tmoy').textContent=dur(d.duree_moyenne);
+  $('k-tmed').textContent=dur(d.duree_mediane);
+  $('k-tmax').textContent=dur(d.duree_max);
+  barres($('l-engagement'),d.engagement,'var(--rouge)');
   barres($('l-villes'),d.villes,'var(--jaune)');
   barres($('l-fideles'),d.fideles,'var(--bleu)');
   barres($('l-sources'),d.sources,'var(--bleu)');
@@ -221,9 +234,11 @@ function dessiner(d){
         return '<tr><td>'+escapeH(x.quand)+'</td>'+
           '<td style="color:'+(neuf?'var(--vert)':'var(--jaune)')+'">'+escapeH(x.statut)+'</td>'+
           '<td>'+escapeH(x.ville||'?')+'</td>'+
+          '<td>'+escapeH(x.duree||'?')+'</td>'+
+          '<td style="color:var(--gris);font-size:.8rem">'+escapeH(x.ip||'?')+'</td>'+
           '<td>'+escapeH(x.appareil)+'</td><td>'+escapeH(x.source)+'</td></tr>';
       }).join('')
-    : '<tr><td colspan="5" class="vide">Aucune visite enregistrée.</td></tr>';
+    : '<tr><td colspan="7" class="vide">Aucune visite enregistrée.</td></tr>';
 }
 
 async function charger(){

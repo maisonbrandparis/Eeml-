@@ -22,6 +22,18 @@ export default async function handler(req, res) {
   corps = corps || {};
 
   const h = req.headers;
+
+  // IP tronquee : on efface le dernier bloc (IPv4) ou la moitie basse (IPv6).
+  // L'adresse complete n'est jamais stockee ni transmise.
+  const brute = String(h['x-forwarded-for'] || '').split(',')[0].trim();
+  let ipT = null;
+  if (brute.includes('.')) {
+    const p4 = brute.split('.');
+    if (p4.length === 4) ipT = p4[0] + '.' + p4[1] + '.' + p4[2] + '.x';
+  } else if (brute.includes(':')) {
+    ipT = brute.split(':').slice(0, 3).join(':') + ':...';
+  }
+
   const ligne = {
     evenement: String(corps.evenement || 'vue').slice(0, 40),
     chemin: String(corps.chemin || '/').slice(0, 200),
@@ -31,7 +43,9 @@ export default async function handler(req, res) {
     referent: String(corps.referent || '').slice(0, 120),
     ville: propre(h['x-vercel-ip-city']) || null,
     region: propre(h['x-vercel-ip-country-region']) || null,
-    pays: propre(h['x-vercel-ip-country']) || String(corps.pays || '').slice(0, 60) || null
+    pays: propre(h['x-vercel-ip-country']) || String(corps.pays || '').slice(0, 60) || null,
+    ip_tronquee: ipT,
+    duree_s: Number.isFinite(+corps.duree_s) ? Math.round(+corps.duree_s) : null
   };
 
   try {

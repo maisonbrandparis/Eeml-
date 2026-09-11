@@ -627,6 +627,28 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
   document.addEventListener('click',function(){
     if(ouvert)return; ouvert=true; envoyer('clic','ouverture du cahier');
   },{once:false});
+
+  // temps reellement passe sur la page, onglet visible uniquement
+  var cumul=0, depart=Date.now(), actif=!document.hidden, envoye=0;
+  function stop(){ if(actif){cumul+=Date.now()-depart; actif=false;} }
+  function start(){ if(!actif){depart=Date.now(); actif=true;} }
+  document.addEventListener('visibilitychange',function(){ document.hidden?stop():start(); });
+  function secondes(){ return Math.round((cumul+(actif?Date.now()-depart:0))/1000); }
+  function remonter(){
+    var s=secondes();
+    if(s<3||s<=envoye+4)return;
+    envoye=s;
+    var d={evenement:'duree',duree_s:s,chemin:'/',session_id:sid,visiteur_id:vid,appareil:appareil(),referent:''};
+    var corps=JSON.stringify(d);
+    if(navigator.sendBeacon){
+      navigator.sendBeacon('/api/visite', new Blob([corps],{type:'application/json'}));
+    } else {
+      fetch('/api/visite',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:corps}).catch(function(){});
+    }
+  }
+  setInterval(remonter, 15000);
+  window.addEventListener('pagehide', remonter);
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) remonter(); });
 })();
 </script>
 </body>
