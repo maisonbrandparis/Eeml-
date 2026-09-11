@@ -103,29 +103,27 @@ body.verrou{overflow:hidden;height:100vh}
   45%{transform:rotate(-1deg) translateY(3px);box-shadow:0 0 0 rgba(19,31,66,.55);background:#16265180}
 }
 
-.main{
-  position:absolute;left:38%;top:4px;width:92px;height:126px;
-  opacity:0;pointer-events:none;z-index:3;transform-origin:80% 90%;
-  animation:main-entre .55s cubic-bezier(.3,.7,.3,1) 5.55s forwards,
-            main-tape .38s ease 6.12s,
-            main-sort .4s ease 6.7s forwards;
+.tap{
+  position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px 0 0 -23px;
+  border-radius:50%;pointer-events:none;z-index:3;opacity:0;
+  background:radial-gradient(circle at 38% 34%, rgba(31,53,102,.42), rgba(31,53,102,.26) 62%, rgba(31,53,102,0) 72%);
+  animation:tap-descend .5s cubic-bezier(.35,.75,.3,1) 5.6s forwards,
+            tap-appuie .42s ease 6.15s,
+            tap-part .38s ease 6.75s forwards;
 }
-.main svg{width:100%;height:100%;display:block;filter:drop-shadow(-3px 6px 9px rgba(0,0,0,.22))}
-.onde{
-  position:absolute;left:9px;top:-6px;width:26px;height:26px;border-radius:50%;
-  border:2.5px solid var(--papier);opacity:0;
-  animation:onde .8s ease-out 6.2s;
+.tap::before,.tap::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  border:2px solid rgba(31,53,102,.55);opacity:0;
 }
-@keyframes main-entre{
-  from{opacity:0;transform:translate(46px,62px) rotate(12deg)}
-  to{opacity:1;transform:translate(0,0) rotate(0)}
+.tap::before{animation:onde .85s ease-out 6.22s}
+.tap::after{animation:onde .85s ease-out 6.4s}
+@keyframes tap-descend{
+  from{opacity:0;transform:scale(2.4) translateY(-16px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
 }
-@keyframes main-tape{
-  0%,100%{transform:translate(0,0)}
-  45%{transform:translate(0,7px)}
-}
-@keyframes main-sort{to{opacity:0;transform:translate(28px,40px) rotate(9deg)}}
-@keyframes onde{0%{opacity:.8;transform:scale(.35)}100%{opacity:0;transform:scale(3.4)}}
+@keyframes tap-appuie{0%,100%{transform:scale(1)}48%{transform:scale(.78)}}
+@keyframes tap-part{to{opacity:0;transform:scale(1.5)}}
+@keyframes onde{0%{opacity:.7;transform:scale(.55)}100%{opacity:0;transform:scale(2.8)}}100%{opacity:0;transform:scale(3.4)}}
 
 .touche{
   font-family:'Karla',sans-serif;font-size:.8rem;color:var(--crayon);
@@ -341,7 +339,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
   .ligne .txt{animation:none;clip-path:none}
   .ligne .plume{display:none}
   .couv-sous,.couv-date,.touche{animation:none;opacity:1}
-  .main{display:none}
+  .tap{display:none}
   #ouvrir{animation:none;opacity:1}
   #couverture{transition:opacity .3s linear}
   .ouvert #couverture{transform:none;opacity:0}
@@ -370,27 +368,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
     <div class="couv-date">Élections le vendredi 9 octobre 2026</div>
         <div class="zone-bouton">
       <button id="ouvrir">Ouvrir le site</button>
-      <div class="main" aria-hidden="true">
-        <span class="onde"></span>
-        <svg viewBox="0 0 92 126" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="peau" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#F0BE9B"/>
-              <stop offset="1" stop-color="#D89A74"/>
-            </linearGradient>
-          </defs>
-          <path d="M14 10 a9 9 0 0 1 18 0 v46 c7-4 15-5 23-3 c9 2 15 8 17 16 l5 19
-                   c2 9-3 17-12 20 l-23 7 c-11 3-22-2-27-11 L4 78 c-4-7-1-14 6-17
-                   c5-2 11 0 14 5 V10 z"
-                fill="url(#peau)" stroke="#B67B57" stroke-width="2.4" stroke-linejoin="round"/>
-          <path d="M32 56 v-8 c7-4 15-5 23-3 c9 2 15 8 17 16 l5 19 c2 9-3 17-12 20
-                   c9-6 11-14 8-23 l-6-17 c-3-8-16-9-35-4 z"
-                fill="#C98A64" opacity=".45"/>
-          <ellipse cx="23" cy="13" rx="6" ry="8" fill="#F8D8C2" opacity=".85"/>
-          <path d="M40 66 c8-2 15-1 19 3 M48 79 c7-2 13-1 17 3 M52 93 c6-2 11-1 14 2"
-                fill="none" stroke="#B67B57" stroke-width="1.9" stroke-linecap="round" opacity=".55"/>
-        </svg>
-      </div>
+      <span class="tap" aria-hidden="true"></span>
     </div>
     <div class="touche">Le site s'ouvre tout seul. Touchez l'écran pour aller plus vite.</div>
   </div>
