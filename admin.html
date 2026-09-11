@@ -83,10 +83,18 @@ th{color:var(--gris);font-weight:600;font-size:.78rem;text-transform:uppercase;l
 
   <div class="chiffres">
     <div class="kpi"><b id="k-auj">0</b><span>vues aujourd'hui</span></div>
+    <div class="kpi"><b id="k-visauj">0</b><span>visiteurs aujourd'hui</span></div>
+    <div class="kpi"><b id="k-hier">0</b><span>vues hier</span></div>
+    <div class="kpi"><b id="k-vishier">0</b><span>visiteurs hier</span></div>
     <div class="kpi"><b id="k-7j">0</b><span>vues sur 7 jours</span></div>
+    <div class="kpi"><b id="k-vis7">0</b><span>visiteurs sur 7 jours</span></div>
     <div class="kpi"><b id="k-tot">0</b><span>vues au total</span></div>
     <div class="kpi"><b id="k-vis">0</b><span>visiteurs uniques</span></div>
-    <div class="kpi"><b id="k-vis7">0</b><span>visiteurs sur 7 jours</span></div>
+  </div>
+
+  <div class="carte">
+    <h2>Aujourd'hui, qui sont-ils</h2>
+    <div class="barres" id="l-nouv"></div>
   </div>
 
   <div class="carte">
@@ -117,8 +125,13 @@ th{color:var(--gris);font-weight:600;font-size:.78rem;text-transform:uppercase;l
   </div>
 
   <div class="carte">
-    <h2>Les 25 dernières visites</h2>
-    <table><thead><tr><th>Quand</th><th>Appareil</th><th>Source</th></tr></thead>
+    <h2>Combien de fois ils reviennent</h2>
+    <div class="barres" id="l-fideles"></div>
+  </div>
+
+  <div class="carte">
+    <h2>Les 30 dernières visites</h2>
+    <table><thead><tr><th>Quand</th><th>Qui</th><th>Appareil</th><th>Source</th></tr></thead>
     <tbody id="t-dern"></tbody></table>
   </div>
 
@@ -162,10 +175,13 @@ function escapeH(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt
 
 function dessiner(d){
   $('k-auj').textContent=n(d.aujourdhui);
+  $('k-visauj').textContent=n(d.visiteurs_auj);
+  $('k-hier').textContent=n(d.hier);
+  $('k-vishier').textContent=n(d.visiteurs_hier);
   $('k-7j').textContent=n(d.sept_jours);
+  $('k-vis7').textContent=n(d.visiteurs_7j);
   $('k-tot').textContent=n(d.total);
   $('k-vis').textContent=n(d.visiteurs);
-  $('k-vis7').textContent=n(d.visiteurs_7j);
   $('maj').textContent='Mis à jour à '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
 
   const j=d.par_jour||[];
@@ -177,6 +193,11 @@ function dessiner(d){
     $('ax-fin').textContent=j[j.length-1].jour.slice(8)+'/'+j[j.length-1].jour.slice(5,7);
   }
 
+  barres($('l-nouv'),[
+    {nom:'Nouveaux visiteurs',n:d.nouveaux_auj||0},
+    {nom:'Déjà venus avant',n:d.retours_auj||0}
+  ],'var(--rouge)');
+  barres($('l-fideles'),d.fideles,'var(--bleu)');
   barres($('l-sources'),d.sources,'var(--bleu)');
   barres($('l-clics'),d.clics,'var(--jaune)');
   barres($('l-appareils'),d.appareils,'var(--vert)');
@@ -189,8 +210,13 @@ function dessiner(d){
 
   const t=d.dernieres||[];
   $('t-dern').innerHTML=t.length
-    ? t.map(x=>'<tr><td>'+escapeH(x.quand)+'</td><td>'+escapeH(x.appareil)+'</td><td>'+escapeH(x.source)+'</td></tr>').join('')
-    : '<tr><td colspan="3" class="vide">Aucune visite enregistrée.</td></tr>';
+    ? t.map(x=>{
+        const neuf=x.statut==='nouveau';
+        return '<tr><td>'+escapeH(x.quand)+'</td>'+
+          '<td style="color:'+(neuf?'var(--vert)':'var(--jaune)')+'">'+escapeH(x.statut)+'</td>'+
+          '<td>'+escapeH(x.appareil)+'</td><td>'+escapeH(x.source)+'</td></tr>';
+      }).join('')
+    : '<tr><td colspan="4" class="vide">Aucune visite enregistrée.</td></tr>';
 }
 
 async function charger(){
