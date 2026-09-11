@@ -85,13 +85,37 @@ body.verrou{overflow:hidden;height:100vh}
 
 .couv-sous{font-size:1rem;color:var(--crayon);margin-top:1.5rem;opacity:0;animation:apparait .8s ease 4.7s forwards;max-width:34ch}
 .couv-date{font-family:'Caveat',cursive;font-size:1.9rem;color:var(--rouge);transform:rotate(-2deg);display:inline-block;margin-top:.6rem;opacity:0;animation:apparait .8s ease 5.1s forwards}
-#ouvrir{
-  display:block;margin-top:2.1rem;opacity:0;animation:apparait .7s ease 5.5s forwards;
-  font-family:'Caveat',cursive;font-size:1.75rem;color:var(--papier);
-  background:var(--encre);border:none;cursor:pointer;padding:.3rem 1.7rem .5rem;transform:rotate(-1deg);
-}
-#ouvrir:hover{background:var(--rouge)}
 @keyframes apparait{to{opacity:1}}
+
+/* main qui vient tourner la page toute seule */
+.doigt{
+  position:relative;width:64px;height:86px;margin:1.9rem 0 0 .4rem;
+  opacity:0;pointer-events:none;
+  animation:doigt-entre .5s ease 5.15s forwards, doigt-tape .5s ease 5.75s, doigt-sort .45s ease 6.45s forwards;
+}
+.doigt svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 4px 7px rgba(0,0,0,.18))}
+.doigt .onde{
+  position:absolute;top:-9px;left:13px;width:22px;height:22px;border-radius:50%;
+  border:2.5px solid var(--encre);opacity:0;
+  animation:onde .75s ease-out 5.85s;
+}
+@keyframes doigt-entre{
+  from{opacity:0;transform:translate(14px,22px) rotate(-8deg)}
+  to{opacity:1;transform:translate(0,0) rotate(0)}
+}
+@keyframes doigt-tape{
+  0%,100%{transform:translate(0,0)}
+  42%{transform:translate(0,9px) scale(.95)}
+}
+@keyframes doigt-sort{to{opacity:0;transform:translate(6px,10px)}}
+@keyframes onde{
+  0%{opacity:.65;transform:scale(.3)}
+  100%{opacity:0;transform:scale(3.1)}
+}
+.touche{
+  font-family:'Karla',sans-serif;font-size:.82rem;color:var(--crayon);
+  margin-top:.5rem;opacity:0;animation:apparait .6s ease 6.9s forwards;
+}
 
 /* ===================== BARRE ===================== */
 .barre{
@@ -301,7 +325,8 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
   html{scroll-behavior:auto}
   .ligne .txt{animation:none;clip-path:none}
   .ligne .plume{display:none}
-  .couv-sous,.couv-date,#ouvrir{animation:none;opacity:1}
+  .couv-sous,.couv-date,.touche{animation:none;opacity:1}
+  .doigt{display:none}
   #couverture{transition:opacity .3s linear}
   .ouvert #couverture{transform:none;opacity:0}
 }
@@ -327,7 +352,15 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
     </span>
     <p class="couv-sous">Association de parents d'élèves, école Marguerite Long, Paris 17e.</p>
     <div class="couv-date">Élections le vendredi 9 octobre 2026</div>
-    <button id="ouvrir">Ouvrir le cahier</button>
+    <div class="doigt" aria-hidden="true">
+      <span class="onde"></span>
+      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 40 V13 a6 6 0 0 1 12 0 v14 a5 5 0 0 1 8.6 3.5 a5 5 0 0 1 7.4 4.4 V52 c0 9-6 15-14.5 15 h-6.5 c-4.2 0-7.4-1.7-10.2-5L7.6 47.4 a5.2 5.2 0 0 1 .5-7.2 a5.6 5.6 0 0 1 7.4.2 Z"
+              fill="#FCFBF5" stroke="#1F3566" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M36 33 v10 M44.6 34 v9 M52 37 v7" fill="none" stroke="#1F3566" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
+      </svg>
+    </div>
+    <div class="touche">Le cahier s'ouvre tout seul. Touchez l'écran pour aller plus vite.</div>
   </div>
 </div>
 
@@ -539,14 +572,15 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
 
 <script>
 (function(){
-  var body=document.body,couv=document.getElementById('couverture'),btn=document.getElementById('ouvrir'),fait=false;
+  var body=document.body,couv=document.getElementById('couverture'),fait=false;
   function ouvrir(){
     if(fait)return;fait=true;
     body.classList.add('ouvert');body.classList.remove('verrou');
     setTimeout(function(){couv.style.display='none';},1400);
   }
-  btn.addEventListener('click',ouvrir);
-  couv.addEventListener('click',function(e){if(e.target!==btn)ouvrir();});
+  var lent=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(ouvrir, lent?900:6750);
+  couv.addEventListener('click',ouvrir);
   document.addEventListener('keydown',function(e){
     if(!fait&&(e.key==='Enter'||e.key===' '||e.key==='Escape'))ouvrir();
   });
@@ -623,11 +657,6 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
     else if(h.indexOf('chat.whatsapp.com')>-1)envoyer('clic','whatsapp');
     else if(h.charAt(0)==='#')envoyer('clic','section '+h);
   },true);
-  var ouvert=false;
-  document.addEventListener('click',function(){
-    if(ouvert)return; ouvert=true; envoyer('clic','ouverture du cahier');
-  },{once:false});
-
   // temps reellement passe sur la page, onglet visible uniquement
   var cumul=0, depart=Date.now(), actif=!document.hidden, envoye=0;
   function stop(){ if(actif){cumul+=Date.now()-depart; actif=false;} }
