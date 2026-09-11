@@ -87,34 +87,49 @@ body.verrou{overflow:hidden;height:100vh}
 .couv-date{font-family:'Caveat',cursive;font-size:1.9rem;color:var(--rouge);transform:rotate(-2deg);display:inline-block;margin-top:.6rem;opacity:0;animation:apparait .8s ease 5.1s forwards}
 @keyframes apparait{to{opacity:1}}
 
-/* main qui vient tourner la page toute seule */
-.doigt{
-  position:relative;width:64px;height:86px;margin:1.9rem 0 0 .4rem;
-  opacity:0;pointer-events:none;
-  animation:doigt-entre .5s ease 5.15s forwards, doigt-tape .5s ease 5.75s, doigt-sort .45s ease 6.45s forwards;
+/* bouton + main qui vient appuyer dessus */
+.zone-bouton{position:relative;display:inline-block;margin-top:2rem}
+#ouvrir{
+  display:block;opacity:0;
+  animation:apparait .6s ease 5.2s forwards, presse .34s ease 6.15s;
+  font-family:'Caveat',cursive;font-size:1.8rem;color:var(--papier);
+  background:var(--encre);border:none;cursor:pointer;
+  padding:.32rem 1.8rem .52rem;transform:rotate(-1deg);
+  box-shadow:0 3px 0 rgba(19,31,66,.55);
 }
-.doigt svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 4px 7px rgba(0,0,0,.18))}
-.doigt .onde{
-  position:absolute;top:-9px;left:13px;width:22px;height:22px;border-radius:50%;
-  border:2.5px solid var(--encre);opacity:0;
-  animation:onde .75s ease-out 5.85s;
+#ouvrir:hover{background:var(--rouge)}
+@keyframes presse{
+  0%,100%{transform:rotate(-1deg) translateY(0);box-shadow:0 3px 0 rgba(19,31,66,.55)}
+  45%{transform:rotate(-1deg) translateY(3px);box-shadow:0 0 0 rgba(19,31,66,.55);background:#16265180}
 }
-@keyframes doigt-entre{
-  from{opacity:0;transform:translate(14px,22px) rotate(-8deg)}
+
+.main{
+  position:absolute;left:38%;top:4px;width:92px;height:126px;
+  opacity:0;pointer-events:none;z-index:3;transform-origin:80% 90%;
+  animation:main-entre .55s cubic-bezier(.3,.7,.3,1) 5.55s forwards,
+            main-tape .38s ease 6.12s,
+            main-sort .4s ease 6.7s forwards;
+}
+.main svg{width:100%;height:100%;display:block;filter:drop-shadow(-3px 6px 9px rgba(0,0,0,.22))}
+.onde{
+  position:absolute;left:9px;top:-6px;width:26px;height:26px;border-radius:50%;
+  border:2.5px solid var(--papier);opacity:0;
+  animation:onde .8s ease-out 6.2s;
+}
+@keyframes main-entre{
+  from{opacity:0;transform:translate(46px,62px) rotate(12deg)}
   to{opacity:1;transform:translate(0,0) rotate(0)}
 }
-@keyframes doigt-tape{
+@keyframes main-tape{
   0%,100%{transform:translate(0,0)}
-  42%{transform:translate(0,9px) scale(.95)}
+  45%{transform:translate(0,7px)}
 }
-@keyframes doigt-sort{to{opacity:0;transform:translate(6px,10px)}}
-@keyframes onde{
-  0%{opacity:.65;transform:scale(.3)}
-  100%{opacity:0;transform:scale(3.1)}
-}
+@keyframes main-sort{to{opacity:0;transform:translate(28px,40px) rotate(9deg)}}
+@keyframes onde{0%{opacity:.8;transform:scale(.35)}100%{opacity:0;transform:scale(3.4)}}
+
 .touche{
-  font-family:'Karla',sans-serif;font-size:.82rem;color:var(--crayon);
-  margin-top:.5rem;opacity:0;animation:apparait .6s ease 6.9s forwards;
+  font-family:'Karla',sans-serif;font-size:.8rem;color:var(--crayon);
+  margin-top:.7rem;opacity:0;animation:apparait .6s ease 6.9s forwards;
 }
 
 /* ===================== BARRE ===================== */
@@ -326,7 +341,8 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
   .ligne .txt{animation:none;clip-path:none}
   .ligne .plume{display:none}
   .couv-sous,.couv-date,.touche{animation:none;opacity:1}
-  .doigt{display:none}
+  .main{display:none}
+  #ouvrir{animation:none;opacity:1}
   #couverture{transition:opacity .3s linear}
   .ouvert #couverture{transform:none;opacity:0}
 }
@@ -352,15 +368,31 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
     </span>
     <p class="couv-sous">Association de parents d'élèves, école Marguerite Long, Paris 17e.</p>
     <div class="couv-date">Élections le vendredi 9 octobre 2026</div>
-    <div class="doigt" aria-hidden="true">
-      <span class="onde"></span>
-      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
-        <path d="M24 40 V13 a6 6 0 0 1 12 0 v14 a5 5 0 0 1 8.6 3.5 a5 5 0 0 1 7.4 4.4 V52 c0 9-6 15-14.5 15 h-6.5 c-4.2 0-7.4-1.7-10.2-5L7.6 47.4 a5.2 5.2 0 0 1 .5-7.2 a5.6 5.6 0 0 1 7.4.2 Z"
-              fill="#FCFBF5" stroke="#1F3566" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M36 33 v10 M44.6 34 v9 M52 37 v7" fill="none" stroke="#1F3566" stroke-width="2.2" stroke-linecap="round" opacity=".45"/>
-      </svg>
+        <div class="zone-bouton">
+      <button id="ouvrir">Ouvrir le site</button>
+      <div class="main" aria-hidden="true">
+        <span class="onde"></span>
+        <svg viewBox="0 0 92 126" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="peau" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#F0BE9B"/>
+              <stop offset="1" stop-color="#D89A74"/>
+            </linearGradient>
+          </defs>
+          <path d="M14 10 a9 9 0 0 1 18 0 v46 c7-4 15-5 23-3 c9 2 15 8 17 16 l5 19
+                   c2 9-3 17-12 20 l-23 7 c-11 3-22-2-27-11 L4 78 c-4-7-1-14 6-17
+                   c5-2 11 0 14 5 V10 z"
+                fill="url(#peau)" stroke="#B67B57" stroke-width="2.4" stroke-linejoin="round"/>
+          <path d="M32 56 v-8 c7-4 15-5 23-3 c9 2 15 8 17 16 l5 19 c2 9-3 17-12 20
+                   c9-6 11-14 8-23 l-6-17 c-3-8-16-9-35-4 z"
+                fill="#C98A64" opacity=".45"/>
+          <ellipse cx="23" cy="13" rx="6" ry="8" fill="#F8D8C2" opacity=".85"/>
+          <path d="M40 66 c8-2 15-1 19 3 M48 79 c7-2 13-1 17 3 M52 93 c6-2 11-1 14 2"
+                fill="none" stroke="#B67B57" stroke-width="1.9" stroke-linecap="round" opacity=".55"/>
+        </svg>
+      </div>
     </div>
-    <div class="touche">Le cahier s'ouvre tout seul. Touchez l'écran pour aller plus vite.</div>
+    <div class="touche">Le site s'ouvre tout seul. Touchez l'écran pour aller plus vite.</div>
   </div>
 </div>
 
@@ -579,7 +611,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
     setTimeout(function(){couv.style.display='none';},1400);
   }
   var lent=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setTimeout(ouvrir, lent?900:6750);
+  setTimeout(ouvrir, lent?900:6950);
   couv.addEventListener('click',ouvrir);
   document.addEventListener('keydown',function(e){
     if(!fait&&(e.key==='Enter'||e.key===' '||e.key==='Escape'))ouvrir();
