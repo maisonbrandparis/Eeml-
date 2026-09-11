@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les Enfants de l'École Marguerite Long</title>
+<meta name="description" content="Association de parents d'élèves de l'école Marguerite Long, Paris 17e. Élections des représentants de parents le 9 octobre 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papier:#FCFBF5;
+  --ligne:#AFC7DE;
+  --interligne:#E7EFF6;
+  --marge:#D4574E;
+  --encre:#1F3566;
+  --rouge:#C0392B;
+  --crayon:#615D55;
+  --ardoise:#2B4238;
+  --craie:#F1EFE3;
+  --jaune:#FFE873;
+  --bureau:#23262B;
+  --gouttiere:4.6rem;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Karla',system-ui,sans-serif;
+  color:#23304F;
+  background:var(--bureau);
+  font-size:17.5px;
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body.verrou{overflow:hidden;height:100vh}
+
+.papier{
+  background-color:var(--papier);
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 31px, var(--ligne) 31px 32px),
+    repeating-linear-gradient(to bottom, transparent 0 7.75px, var(--interligne) 7.75px 8px),
+    repeating-linear-gradient(to right, transparent 0 31px, var(--interligne) 31px 32px);
+}
+
+/* ===================== COUVERTURE ===================== */
+#couverture{
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  transform-origin:left center;
+  transition:transform 1.15s cubic-bezier(.72,0,.24,1), opacity .9s ease .25s;
+}
+.ouvert #couverture{
+  transform:perspective(2200px) rotateY(-108deg);
+  opacity:0;
+  box-shadow:34px 0 60px rgba(0,0,0,.35);
+}
+.couv-marge{position:absolute;top:0;bottom:0;left:3.25rem;width:2px;background:var(--marge);opacity:.65}
+.couv-perfos{
+  position:absolute;top:0;bottom:0;left:.85rem;width:1.2rem;
+  display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:6rem 0;
+}
+.couv-perfos i{display:block;width:15px;height:15px;border-radius:50%;background:#DAD6C8;box-shadow:inset 0 1px 2px rgba(0,0,0,.22)}
+.couv-inner{position:relative;z-index:2;width:100%;max-width:820px;padding:0 1.75rem 0 3.75rem}
+
+.ligne{
+  position:relative;display:block;width:max-content;max-width:100%;
+  font-family:'Caveat',cursive;color:var(--encre);
+  line-height:1.05;font-size:clamp(2.6rem,10.5vw,5.2rem);font-weight:600;margin-bottom:.12em;
+}
+.ligne .txt{
+  display:inline-block;
+  clip-path:inset(-18% 100% -22% -4%);
+  animation:ecrire var(--dur) cubic-bezier(.42,.02,.58,1) var(--del) forwards;
+}
+.ligne .plume{
+  position:absolute;bottom:.06em;left:0;width:clamp(30px,7vw,44px);opacity:0;
+  transform:translate(-14%,26%);
+  animation:glisse var(--dur) cubic-bezier(.42,.02,.58,1) var(--del) forwards;
+}
+@keyframes ecrire{from{clip-path:inset(-18% 100% -22% -4%)}to{clip-path:inset(-18% -6% -22% -4%)}}
+@keyframes glisse{0%{left:0;opacity:0}4%{opacity:1}92%{opacity:1}100%{left:100%;opacity:0}}
+
+.couv-sous{font-size:1rem;color:var(--crayon);margin-top:1.5rem;opacity:0;animation:apparait .8s ease 4.7s forwards;max-width:34ch}
+.couv-date{font-family:'Caveat',cursive;font-size:1.9rem;color:var(--rouge);transform:rotate(-2deg);display:inline-block;margin-top:.6rem;opacity:0;animation:apparait .8s ease 5.1s forwards}
+#ouvrir{
+  display:block;margin-top:2.1rem;opacity:0;animation:apparait .7s ease 5.5s forwards;
+  font-family:'Caveat',cursive;font-size:1.75rem;color:var(--papier);
+  background:var(--encre);border:none;cursor:pointer;padding:.3rem 1.7rem .5rem;transform:rotate(-1deg);
+}
+#ouvrir:hover{background:var(--rouge)}
+@keyframes apparait{to{opacity:1}}
+
+/* ===================== BARRE ===================== */
+.barre{
+  position:sticky;top:0;z-index:40;
+  background:rgba(25,28,32,.95);
+  border-bottom:1px solid rgba(255,255,255,.09);
+  color:var(--craie);
+}
+.barre-in{max-width:900px;margin:0 auto;padding:.62rem 1.1rem;display:flex;align-items:center;gap:.85rem}
+.barre-nom{font-family:'Caveat',cursive;font-size:1.35rem;font-weight:700;line-height:1.15;flex:1}
+.barre-j{font-family:'Caveat',cursive;font-size:1.3rem;color:#FF9A8F;white-space:nowrap}
+.barre-btn{
+  background:none;border:1px solid rgba(255,255,255,.3);color:var(--craie);
+  font-family:'Karla',sans-serif;font-size:.8rem;font-weight:700;
+  padding:.28rem .7rem;cursor:pointer;border-radius:3px;
+}
+.barre-btn:hover{background:rgba(255,255,255,.12)}
+.sommaire{display:none;max-width:900px;margin:0 auto;padding:0 1.1rem 1rem}
+.sommaire.on{display:block}
+.sommaire a{
+  display:block;color:var(--craie);text-decoration:none;
+  font-family:'Caveat',cursive;font-size:1.35rem;
+  padding:.18rem 0;border-bottom:1px dotted rgba(255,255,255,.16);
+}
+.sommaire a:hover{color:#FF9A8F}
+
+/* ===================== LE CAHIER ===================== */
+.bureau{padding:2.2rem 1rem 4rem}
+.cahier{
+  position:relative;
+  max-width:860px;margin:0 auto;
+  box-shadow:0 3px 8px rgba(0,0,0,.4), 0 28px 60px rgba(0,0,0,.35);
+}
+.cahier::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background-image:radial-gradient(rgba(120,110,80,.09) 1px, transparent 1px);
+  background-size:3px 3px;
+}
+.reliure{
+  position:absolute;top:0;bottom:0;left:0;width:var(--gouttiere);
+  display:flex;flex-direction:column;align-items:center;gap:4.5rem;
+  padding:3.5rem 0;pointer-events:none;
+}
+.reliure i{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--bureau);
+  box-shadow:inset 0 2px 3px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.55);
+}
+.filet{position:absolute;top:0;bottom:0;left:var(--gouttiere);width:2px;background:var(--marge);opacity:.7}
+
+.photo{
+  position:relative;z-index:3;
+  margin:2.6rem 2.6rem 0 calc(var(--gouttiere) + 1.5rem);
+  background:#fff;padding:.7rem .7rem 0;
+  box-shadow:0 5px 16px rgba(0,0,0,.28);
+  transform:rotate(-.7deg);
+}
+.photo img{display:block;width:100%;height:clamp(190px,34vh,330px);object-fit:cover;object-position:50% 46%}
+.photo figcaption{
+  font-family:'Caveat',cursive;font-size:1.3rem;color:#4A463E;
+  padding:.4rem .3rem .5rem;text-align:center;line-height:1.15;
+}
+.photo::before,.photo::after{
+  content:"";position:absolute;top:-13px;width:78px;height:26px;
+  background:rgba(226,219,192,.82);box-shadow:0 1px 2px rgba(0,0,0,.12);
+}
+.photo::before{left:-18px;transform:rotate(-31deg)}
+.photo::after{right:-18px;transform:rotate(31deg)}
+
+section{
+  position:relative;z-index:2;
+  padding:3.2rem 2.6rem 3.2rem calc(var(--gouttiere) + 1.5rem);
+  scroll-margin-top:70px;
+}
+section + section{border-top:1px solid rgba(31,53,102,.12)}
+
+.num{
+  position:absolute;left:0;width:var(--gouttiere);text-align:center;
+  font-family:'Caveat',cursive;font-size:2.5rem;font-weight:700;
+  color:var(--marge);opacity:.5;line-height:1;margin-top:.35rem;
+}
+h2{
+  font-family:'Caveat',cursive;font-weight:700;
+  font-size:clamp(2.2rem,6.8vw,3.2rem);line-height:1;color:var(--encre);margin:0 0 .1rem;
+}
+.chapeau{
+  font-family:'Caveat',cursive;font-size:1.35rem;color:var(--rouge);
+  display:inline-block;transform:rotate(-.7deg);margin-bottom:1.6rem;
+}
+h3{font-family:'Caveat',cursive;font-size:1.7rem;font-weight:600;margin:2.1rem 0 .4rem;color:var(--encre)}
+p{margin:0 0 1rem;max-width:60ch}
+section > p:last-child{margin-bottom:0}
+strong{font-weight:700}
+em{font-style:italic;color:var(--crayon)}
+.surligne{background:linear-gradient(transparent 56%, var(--jaune) 56% 93%, transparent 93%);padding:0 .1em}
+
+.note{
+  font-family:'Caveat',cursive;color:var(--rouge);font-size:1.25rem;line-height:1.15;
+  transform:rotate(-3deg);margin:.2rem 0 1.2rem;display:block;
+}
+.porte-note{position:relative}
+@media (min-width:900px){
+  .note{position:absolute;left:-13.2rem;top:.3rem;width:11.5rem;text-align:right;margin:0}
+}
+
+ul.coches{list-style:none;margin:.6rem 0 1.2rem}
+ul.coches li{position:relative;padding-left:2rem;margin-bottom:.75rem;max-width:58ch}
+ul.coches li::before{
+  content:"";position:absolute;left:.1rem;top:.36em;width:1.1rem;height:1.1rem;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 13.5 L8 21 L22 2' fill='none' stroke='%23C0392B' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size:contain;background-repeat:no-repeat;
+}
+.axe{margin:2rem 0}
+.axe h3{margin-top:0}
+.axe ul{list-style:none}
+.axe li{position:relative;padding-left:1.1rem;margin-bottom:.5rem;max-width:57ch}
+.axe li::before{content:"";position:absolute;left:0;top:.78em;width:5px;height:5px;border-radius:50%;background:var(--encre);opacity:.5}
+
+.postit{
+  position:relative;background:var(--jaune);
+  padding:1.15rem 1.3rem;margin:2rem 0;max-width:29rem;
+  transform:rotate(-1.1deg);
+  box-shadow:3px 4px 10px rgba(0,0,0,.22);
+  font-family:'Caveat',cursive;font-size:1.42rem;line-height:1.3;color:#2A2A2A;
+}
+.postit::before{
+  content:"";position:absolute;top:-11px;left:50%;margin-left:-38px;
+  width:76px;height:22px;background:rgba(233,228,205,.78);
+  border-left:1px solid rgba(0,0,0,.07);border-right:1px solid rgba(0,0,0,.07);
+  transform:rotate(-2deg);
+}
+.postit p{font-family:inherit;font-size:inherit;margin:0;max-width:none}
+
+.tableau{
+  background-color:var(--ardoise);
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size:4px 4px;
+  color:var(--craie);
+  padding:2.2rem 1.8rem;margin:1.6rem 0 2rem;
+  border:9px solid #6B4A2B;
+  box-shadow:0 8px 20px rgba(0,0,0,.3), inset 0 0 40px rgba(0,0,0,.35);
+  transform:rotate(-.5deg);
+}
+.tableau h3{color:var(--craie);margin-top:1.7rem}
+.tableau h3:first-child{margin-top:0}
+.tableau p,.tableau li{color:#DCD9CB}
+.tableau ul.coches li::before{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 13.5 L8 21 L22 2' fill='none' stroke='%23F1EFE3' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.compte{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap}
+.compte b{font-family:'Caveat',cursive;font-size:clamp(3.4rem,13vw,5rem);line-height:.8;color:#FFD9A0;font-weight:700}
+.compte span{font-family:'Caveat',cursive;font-size:1.5rem;color:#CFD8CF;max-width:20ch;line-height:1.15}
+
+.etiquettes{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin:1.3rem 0 .6rem}
+.etiquette{
+  background:#fff;padding:.62rem .8rem;
+  border:2px solid var(--e,#1F3566);
+  box-shadow:0 1px 3px rgba(0,0,0,.16);
+  transform:rotate(-.5deg);
+}
+.etiquette:nth-child(even){transform:rotate(.6deg)}
+.etiquette:nth-child(3n+1){--e:#2E7D5B}
+.etiquette:nth-child(3n+2){--e:#1F3566}
+.etiquette:nth-child(3n){--e:#C0392B}
+.etiquette b{display:block;font-family:'Caveat',cursive;font-size:1.5rem;font-weight:600;line-height:1.1;color:var(--encre)}
+.etiquette span{font-size:.83rem;color:var(--crayon)}
+.trou{border-bottom:1.5px dashed var(--marge);color:var(--marge);font-style:italic}
+
+.liens{list-style:none;margin:1.1rem 0 0}
+.liens li{margin-bottom:.65rem;padding-left:1.4rem;position:relative}
+.liens li::before{content:"";position:absolute;left:0;top:.72em;width:7px;height:2px;background:var(--marge)}
+.liens a{color:var(--encre);text-decoration-thickness:1.5px;text-underline-offset:3px}
+.liens a:hover{color:var(--rouge)}
+
+.bouton{
+  display:inline-block;margin-top:1.4rem;
+  font-family:'Caveat',cursive;font-size:1.6rem;line-height:1.1;
+  color:var(--papier);background:#1F7A4C;
+  text-decoration:none;padding:.35rem 1.4rem .5rem;
+  transform:rotate(-1deg);
+  box-shadow:2px 3px 7px rgba(0,0,0,.22);
+}
+.bouton:hover{background:var(--encre)}
+
+footer{max-width:860px;margin:0 auto;padding:1.4rem .4rem 0;font-size:.8rem;color:#8A8579;line-height:1.5}
+footer p{max-width:none;margin:0 0 .3rem}
+
+a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3px}
+
+@media (max-width:600px){
+  :root{--gouttiere:2.7rem}
+  body{font-size:16.5px}
+  .bureau{padding:1rem .55rem 2.5rem}
+  section{padding:2.3rem 1.1rem 2.3rem calc(var(--gouttiere) + .9rem)}
+  .reliure{gap:3rem;padding:2.5rem 0}
+  .reliure i{width:11px;height:11px}
+  .num{font-size:1.7rem}
+  .tableau{padding:1.5rem 1.1rem;border-width:7px}
+  .photo{margin:1.6rem 1.1rem 0 calc(var(--gouttiere) + .9rem);padding:.45rem .45rem 0}
+  .photo::before,.photo::after{width:56px;height:20px;top:-10px}
+  .photo::before{left:-12px}
+  .photo::after{right:-12px}
+  .couv-inner{padding:0 1.1rem 0 3.4rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ligne .txt{animation:none;clip-path:none}
+  .ligne .plume{display:none}
+  .couv-sous,.couv-date,#ouvrir{animation:none;opacity:1}
+  #couverture{transition:opacity .3s linear}
+  .ouvert #couverture{transform:none;opacity:0}
+}
+</style>
+</head>
+<body class="verrou">
+
+<div id="couverture" class="papier">
+  <div class="couv-marge"></div>
+  <div class="couv-perfos"><i></i><i></i><i></i></div>
+  <div class="couv-inner">
+    <span class="ligne" style="--dur:1.25s;--del:.45s">
+      <span class="txt">Les Enfants</span>
+      <svg class="plume" viewBox="0 0 40 64" aria-hidden="true"><g transform="rotate(22 20 32)"><rect x="14" y="2" width="12" height="34" rx="3" fill="#1F3566"/><rect x="14" y="30" width="12" height="7" fill="#131F42"/><path d="M14 37 L20 60 L26 37 Z" fill="#C9CEDB"/><path d="M18.6 52 L20 62 L21.4 52 Z" fill="#1F3566"/></g></svg>
+    </span>
+    <span class="ligne" style="--dur:1.15s;--del:1.8s">
+      <span class="txt">de l'École</span>
+      <svg class="plume" viewBox="0 0 40 64" aria-hidden="true"><g transform="rotate(22 20 32)"><rect x="14" y="2" width="12" height="34" rx="3" fill="#1F3566"/><rect x="14" y="30" width="12" height="7" fill="#131F42"/><path d="M14 37 L20 60 L26 37 Z" fill="#C9CEDB"/><path d="M18.6 52 L20 62 L21.4 52 Z" fill="#1F3566"/></g></svg>
+    </span>
+    <span class="ligne" style="--dur:1.6s;--del:3.05s">
+      <span class="txt">Marguerite Long</span>
+      <svg class="plume" viewBox="0 0 40 64" aria-hidden="true"><g transform="rotate(22 20 32)"><rect x="14" y="2" width="12" height="34" rx="3" fill="#1F3566"/><rect x="14" y="30" width="12" height="7" fill="#131F42"/><path d="M14 37 L20 60 L26 37 Z" fill="#C9CEDB"/><path d="M18.6 52 L20 62 L21.4 52 Z" fill="#1F3566"/></g></svg>
+    </span>
+    <p class="couv-sous">Association de parents d'élèves, école Marguerite Long, Paris 17e.</p>
+    <div class="couv-date">Élections le vendredi 9 octobre 2026</div>
+    <button id="ouvrir">Ouvrir le cahier</button>
+  </div>
+</div>
+
+<header class="barre">
+  <div class="barre-in">
+    <div class="barre-nom">Les Enfants de l'École Marguerite Long</div>
+    <div class="barre-j" id="rappel">9 octobre</div>
+    <button class="barre-btn" id="btn-sommaire" aria-expanded="false">Sommaire</button>
+  </div>
+  <nav class="sommaire" id="sommaire" aria-label="Sections">
+    <a href="#asso">1. L'association</a>
+    <a href="#regle">2. Notre règle</a>
+    <a href="#programme">3. Le programme</a>
+    <a href="#kermesse">4. La kermesse</a>
+    <a href="#elections">5. Le 9 octobre</a>
+    <a href="#contact">6. Nous écrire</a>
+  </nav>
+</header>
+
+<div class="bureau">
+<div class="cahier papier">
+  <div class="filet"></div>
+
+  <figure class="photo">
+    <img src="/ecole.jpg" alt="L'école Marguerite Long vue de la rue, façade en brique rouge et grandes baies vitrées">
+    <figcaption>Notre école, Marguerite Long, Paris 17e</figcaption>
+  </figure>
+
+  <section id="asso">
+    <div class="num">1</div>
+    <h2>L'association</h2>
+    <div class="chapeau">la première déclarée de l'école</div>
+
+    <p>Avant nous, il n'y avait pas d'association de parents d'élèves à Marguerite Long. Des parents élus, oui, mais rien de structuré, rien qui survive à l'été.</p>
+    <p>Nous l'avons déclarée début 2026 pour que les familles aient <span class="surligne">une voix organisée toute l'année</span>, et pas seulement trois réunions dans un couloir.</p>
+
+    <div class="postit">
+      <p>Une association déclarée, ça veut dire des statuts, un compte bancaire, un bureau. Et surtout quelqu'un à qui vous pouvez demander des comptes.</p>
+    </div>
+
+    <p><em>Association déclarée sous le numéro W751282766, école Marguerite Long, Paris 17e.</em></p>
+  </section>
+
+  <section id="regle">
+    <div class="num">2</div>
+    <h2>Notre règle</h2>
+    <div class="chapeau">on dit ce qu'on fait, on montre ce que ça coûte</div>
+
+    <p>C'est le seul engagement qui rend tous les autres vérifiables. Quatre promesses, toutes contrôlables par n'importe quel parent.</p>
+
+    <ul class="coches">
+      <li><strong>Le compte rendu de chaque conseil d'école sous 72 heures</strong>, envoyé à toutes les familles, écrit en français clair et pas en sigles.</li>
+      <li><strong>Le budget publié en ligne, à l'euro près.</strong> Ce qui rentre, ce qui sort, mis à jour après chaque événement.</li>
+      <li><strong>Le bénéfice de la kermesse affecté à un projet voté par les familles.</strong> Trois propositions, un vote, la facture publiée à la fin.</li>
+      <li><strong>Une question posée, une réponse sous 7 jours.</strong> Même quand la réponse est « nous ne savons pas encore ».</li>
+    </ul>
+
+    <div class="porte-note">
+      <span class="note">le conseil d'école est consultatif, pas décisionnaire</span>
+      <p>Nous ne promettons pas des travaux ni des embauches, nous n'en avons pas le pouvoir. Nous promettons de demander par écrit, de relancer, et de publier les réponses avec leur date.</p>
+    </div>
+  </section>
+
+  <section id="programme">
+    <div class="num">3</div>
+    <h2>Le programme</h2>
+    <div class="chapeau">cinq chantiers pour l'année</div>
+
+    <div class="axe porte-note">
+      <span class="note">un relevé par mois</span>
+      <h3>La cantine, notée par les enfants</h3>
+      <ul>
+        <li>Un baromètre mensuel rempli par les enfants : le goût, la quantité, le bruit, le temps pour manger.</li>
+        <li>Les résultats agrégés et portés à la Caisse des écoles du 17e, chiffres à l'appui.</li>
+        <li>Les menus envoyés aux parents à l'avance, pas affichés la veille.</li>
+      </ul>
+    </div>
+
+    <div class="axe porte-note">
+      <span class="note">comptage sur une semaine</span>
+      <h3>Le trottoir devant l'école</h3>
+      <ul>
+        <li>Vélos et trottinettes traversent à pleine vitesse le large trottoir, aux heures d'entrée et de sortie.</li>
+        <li>Un comptage matin et soir par des parents volontaires. Des chiffres, pas des impressions.</li>
+        <li>Une demande écrite à la mairie du 17e sur cette base, et l'étude d'une zone apaisée aux heures de sortie.</li>
+        <li>Les relances datées et publiées, pour que chacun voie qui répond et quand.</li>
+      </ul>
+    </div>
+
+    <div class="axe porte-note">
+      <span class="note">dépôt début 2027</span>
+      <h3>Une cour Oasis pour Marguerite Long</h3>
+      <ul>
+        <li>Nous déposons un projet au budget participatif 2027 de la Ville de Paris, au nom des familles.</li>
+        <li>Moins de bitume, des arbres, de l'ombre et de la fraîcheur avant l'été.</li>
+        <li>Nous montons le dossier, nous mobilisons pour la phase de vote, nous publions chaque étape.</li>
+      </ul>
+    </div>
+
+    <div class="axe">
+      <h3>Aucune sortie ratée pour une question d'argent</h3>
+      <ul>
+        <li>Un fonds de solidarité alimenté par l'association pour les sorties et les projets de classe.</li>
+        <li>Demande discrète, sans dossier ni justificatif à étaler devant qui que ce soit.</li>
+        <li>Montants globaux publiés, jamais les noms.</li>
+      </ul>
+    </div>
+
+    <div class="axe">
+      <h3>L'entraide entre familles</h3>
+      <ul>
+        <li>Un café des parents à chaque retour de vacances, dans la cour, sans ordre du jour.</li>
+        <li>Une bourse aux livres en juin, une banque de fournitures à la rentrée.</li>
+        <li>Les informations importantes traduites pour les familles qui ne lisent pas le français.</li>
+        <li>Un état des lieux de l'étude et des ateliers du soir : places, encadrement, contenu.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="kermesse">
+    <div class="num">4</div>
+    <h2>La kermesse</h2>
+    <div class="chapeau">ce qui marche, on n'y touche pas</div>
+
+    <p>Elle fonctionne. Des petits stands partout, des mini lots, et les enfants rejouent autant qu'ils veulent, sans ticket à compter. <span class="surligne">Aucun enfant n'est mis de côté</span> parce qu'il n'a plus de monnaie. C'est rare, c'est juste, et ça reste.</p>
+
+    <h3>Ce que nous ajoutons</h3>
+    <ul class="coches">
+      <li><strong>Les comptes publiés le lendemain.</strong> Recettes, dépenses, bénéfice net. Aujourd'hui personne ne sait ce que la kermesse rapporte.</li>
+      <li><strong>Le bénéfice affecté à un projet voté par les familles.</strong> Trois projets proposés, un vote ouvert dix jours, la facture publiée à l'achat.</li>
+    </ul>
+
+    <h3>La tombola</h3>
+    <p>Elle reste réservée aux familles de l'école. Deux changements.</p>
+    <div class="porte-note">
+      <span class="note">démarchage dès janvier</span>
+      <ul class="coches">
+        <li><strong>De vrais lots.</strong> Nous démarchons les commerçants du quartier et les entreprises, avec un gros lot annoncé à l'avance. Fini les lots symboliques qu'on achète par politesse.</li>
+        <li><strong>Les billets disponibles en ligne</strong>, plus seulement à la sortie de l'école. Numéros envoyés par mail, gagnants prévenus le soir même, liste publiée.</li>
+      </ul>
+    </div>
+
+    <div class="postit">
+      <p>Les commerçants qui offrent un lot sont remerciés sur l'affiche et ici même. C'est ce qui nous permettra de retourner les voir l'année suivante.</p>
+    </div>
+  </section>
+
+  <section id="elections">
+    <div class="num">5</div>
+    <h2>Le 9 octobre</h2>
+    <div class="chapeau">élections des représentants de parents d'élèves</div>
+
+    <div class="tableau">
+      <div class="compte">
+        <b id="compteur">J-28</b>
+        <span id="compte-legende">avant le scrutin du vendredi 9 octobre 2026</span>
+      </div>
+      <h3>Qui vote</h3>
+      <ul class="coches">
+        <li><strong>Les deux parents votent</strong>, chacun sa voix, quelle que soit la situation familiale.</li>
+        <li>Une seule voix par parent, même avec plusieurs enfants dans l'école.</li>
+        <li><strong>Le vote par correspondance est possible.</strong> Le matériel est remis par l'école quelques jours avant, pas besoin de se déplacer.</li>
+      </ul>
+    </div>
+
+    <h3>Notre liste</h3>
+    <div class="etiquettes">
+      <div class="etiquette"><b class="trou">Prénom Nom</b><span class="trou">parent d'élève en …</span></div>
+      <div class="etiquette"><b class="trou">Prénom Nom</b><span class="trou">parent d'élève en …</span></div>
+      <div class="etiquette"><b class="trou">Prénom Nom</b><span class="trou">parent d'élève en …</span></div>
+      <div class="etiquette"><b class="trou">Prénom Nom</b><span class="trou">parent d'élève en …</span></div>
+      <div class="etiquette"><b class="trou">Prénom Nom</b><span class="trou">parent d'élève en …</span></div>
+      <div class="etiquette"><b class="trou">Prénom Nom</b><span class="trou">parent d'élève en …</span></div>
+    </div>
+
+    <p>Il reste des places. Se présenter ne demande ni compétence particulière ni disponibilité énorme, trois conseils d'école dans l'année et ce qu'on veut y mettre en plus.</p>
+
+    <div class="postit">
+      <p>Vous voulez être sur la liste ? Écrivez à contact@eeml.fr, envoyez un SMS au 06 14 91 21 05, ou passez par la communauté WhatsApp des parents, plus bas. On a jusqu'au 28 septembre pour déposer les noms.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="num">6</div>
+    <h2>Nous écrire</h2>
+    <div class="chapeau">une question posée, une réponse sous 7 jours</div>
+
+    <p>Une remarque sur la cantine, une idée pour la kermesse, un problème que vous n'osez pas remonter seul. Écrivez-nous, nous répondons.</p>
+
+    <ul class="liens">
+      <li>Par mail, <a href="mailto:contact@eeml.fr">contact@eeml.fr</a></li>
+      <li>Par téléphone ou SMS, <a href="tel:+33614912105">06 14 91 21 05</a></li>
+      <li>En vrai, au café des parents, dans la cour à chaque retour de vacances</li>
+      <li>Par écrit, dans la boîte de l'association à l'accueil de l'école</li>
+    </ul>
+
+    <h3>La communauté WhatsApp des parents</h3>
+    <p>C'est là que passent les infos rapides : les comptes rendus, les dates, les coups de main du jour. Ouverte à toutes les familles de l'école, sans obligation de participer.</p>
+    <a class="bouton" href="https://chat.whatsapp.com/GuPkZZxuNqxIIUmE8erTiU" target="_blank" rel="noopener">Rejoindre la communauté WhatsApp</a>
+  </section>
+
+</div>
+
+<footer>
+  <p>Les Enfants de l'École Marguerite Long, association déclarée W751282766, école Marguerite Long, Paris 17e.</p>
+  <p>Site tenu par les parents bénévoles de l'association. contact@eeml.fr, 06 14 91 21 05.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var body=document.body,couv=document.getElementById('couverture'),btn=document.getElementById('ouvrir'),fait=false;
+  function ouvrir(){
+    if(fait)return;fait=true;
+    body.classList.add('ouvert');body.classList.remove('verrou');
+    setTimeout(function(){couv.style.display='none';},1400);
+  }
+  btn.addEventListener('click',ouvrir);
+  couv.addEventListener('click',function(e){if(e.target!==btn)ouvrir();});
+  document.addEventListener('keydown',function(e){
+    if(!fait&&(e.key==='Enter'||e.key===' '||e.key==='Escape'))ouvrir();
+  });
+  window.addEventListener('wheel',ouvrir,{passive:true,once:true});
+  window.addEventListener('touchmove',ouvrir,{passive:true,once:true});
+
+  var bs=document.getElementById('btn-sommaire'),som=document.getElementById('sommaire');
+  bs.addEventListener('click',function(){
+    var on=som.classList.toggle('on');
+    bs.setAttribute('aria-expanded',on?'true':'false');
+  });
+  som.addEventListener('click',function(e){
+    if(e.target.tagName==='A'){som.classList.remove('on');bs.setAttribute('aria-expanded','false');}
+  });
+
+  var scrutin=new Date(2026,9,9,8,30);
+  var reste=Math.ceil((scrutin-new Date())/86400000);
+  var c=document.getElementById('compteur'),r=document.getElementById('rappel'),lg=document.getElementById('compte-legende');
+  if(reste>1){c.textContent='J-'+reste;r.textContent='dans '+reste+' jours';}
+  else if(reste===1){c.textContent='Demain';r.textContent='c\u2019est demain';}
+  else if(reste===0){c.textContent="Aujourd'hui";r.textContent='on y est';}
+  else{c.textContent='Merci';r.textContent='merci pour vos voix';
+       lg.textContent='Le scrutin est passé. Les comptes rendus arrivent ici.';}
+})();
+</script>
+</body>
+</html>
