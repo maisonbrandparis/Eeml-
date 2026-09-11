@@ -6,7 +6,7 @@ Site de l'association de parents d'élèves de l'école Marguerite Long, Paris 1
 ## Contenu
 
 - `index.html` : le site complet, un seul fichier, sans dépendance ni build
-- `ecole.jpg` : photo de l'école affichée en haut de page
+- La photo de l école est intégrée directement dans `index.html`, au format WebP encodé en base64
 
 ## Mise en ligne
 
