@@ -104,7 +104,12 @@ th{color:var(--gris);font-weight:600;font-size:.78rem;text-transform:uppercase;l
   </div>
 
   <div class="carte">
-    <h2>D'où viennent-ils</h2>
+    <h2>De quelle ville</h2>
+    <div class="barres" id="l-villes"></div>
+  </div>
+
+  <div class="carte">
+    <h2>Par quel chemin ils arrivent</h2>
     <div class="barres" id="l-sources"></div>
   </div>
 
@@ -131,7 +136,7 @@ th{color:var(--gris);font-weight:600;font-size:.78rem;text-transform:uppercase;l
 
   <div class="carte">
     <h2>Les 30 dernières visites</h2>
-    <table><thead><tr><th>Quand</th><th>Qui</th><th>Appareil</th><th>Source</th></tr></thead>
+    <table><thead><tr><th>Quand</th><th>Qui</th><th>Ville</th><th>Appareil</th><th>Source</th></tr></thead>
     <tbody id="t-dern"></tbody></table>
   </div>
 
@@ -197,6 +202,7 @@ function dessiner(d){
     {nom:'Nouveaux visiteurs',n:d.nouveaux_auj||0},
     {nom:'Déjà venus avant',n:d.retours_auj||0}
   ],'var(--rouge)');
+  barres($('l-villes'),d.villes,'var(--jaune)');
   barres($('l-fideles'),d.fideles,'var(--bleu)');
   barres($('l-sources'),d.sources,'var(--bleu)');
   barres($('l-clics'),d.clics,'var(--jaune)');
@@ -214,9 +220,10 @@ function dessiner(d){
         const neuf=x.statut==='nouveau';
         return '<tr><td>'+escapeH(x.quand)+'</td>'+
           '<td style="color:'+(neuf?'var(--vert)':'var(--jaune)')+'">'+escapeH(x.statut)+'</td>'+
+          '<td>'+escapeH(x.ville||'?')+'</td>'+
           '<td>'+escapeH(x.appareil)+'</td><td>'+escapeH(x.source)+'</td></tr>';
       }).join('')
-    : '<tr><td colspan="4" class="vide">Aucune visite enregistrée.</td></tr>';
+    : '<tr><td colspan="5" class="vide">Aucune visite enregistrée.</td></tr>';
 }
 
 async function charger(){

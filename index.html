@@ -599,9 +599,18 @@ a:focus-visible,button:focus-visible{outline:3px solid #FF9A8F;outline-offset:3p
              appareil:appareil(),
              referent:(document.referrer||'').replace(/^https?:\/\//,'').split('/')[0],
              pays:(Intl.DateTimeFormat().resolvedOptions().timeZone||'')};
-      fetch(SB+'/rest/v1/eeml_visites',{method:'POST',keepalive:true,
-        headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=minimal'},
-        body:JSON.stringify(d)});
+      fetch('/api/visite',{method:'POST',keepalive:true,
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(d)}).then(function(r){
+          if(r.ok)return;
+          return fetch(SB+'/rest/v1/eeml_visites',{method:'POST',keepalive:true,
+            headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=minimal'},
+            body:JSON.stringify(d)});
+        }).catch(function(){
+          fetch(SB+'/rest/v1/eeml_visites',{method:'POST',keepalive:true,
+            headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'return=minimal'},
+            body:JSON.stringify(d)}).catch(function(){});
+        });
     }catch(e){}
   }
   envoyer('vue');
