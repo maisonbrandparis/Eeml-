@@ -138,7 +138,12 @@ async function rpc(fn, body){
   const r=await fetch(SB+'/rest/v1/rpc/'+fn,{method:'POST',
     headers:{'Content-Type':'application/json','apikey':KEY,'Authorization':'Bearer '+KEY},
     body:JSON.stringify(body)});
-  if(!r.ok){ throw new Error((await r.json().catch(()=>({}))).message||'erreur'); }
+  if(!r.ok){
+    const j=await r.json().catch(()=>({}));
+    const e=new Error(j.message||j.hint||('HTTP '+r.status));
+    e.statut=r.status; e.code=j.code||''; e.brut=JSON.stringify(j);
+    throw e;
+  }
   return r.json();
 }
 
@@ -195,9 +200,16 @@ async function charger(){
 }
 
 $('entrer').onclick=async()=>{
-  mdp=$('mdp').value; $('err').textContent='';
+  mdp=$('mdp').value; $('err').textContent='Connexion...';
   try{ await charger(); sessionStorage.setItem('eeml_admin',mdp); }
-  catch(e){ $('err').textContent='Mot de passe incorrect.'; }
+  catch(e){
+    if(e.code==='28000'||/mot de passe invalide/i.test(e.message||'')){
+      $('err').textContent='Mot de passe incorrect.';
+    } else {
+      $('err').textContent='Erreur technique : '+(e.message||'inconnue')+' ('+(e.statut||'?')+')';
+      console.error('detail', e.brut);
+    }
+  }
 };
 $('mdp').addEventListener('keydown',e=>{if(e.key==='Enter')$('entrer').click();});
 $('refresh').onclick=()=>charger().catch(()=>{});
