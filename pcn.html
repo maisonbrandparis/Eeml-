@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Se connecter à Paris Classe Numérique · Les Enfants de l'École Marguerite Long</title>
+<meta name="description" content="Guide pas à pas pour activer son compte parent Paris Classe Numérique et installer l'application, par l'association de parents de l'école Marguerite Long.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papier:#FCFBF5;--ligne:#AFC7DE;--interligne:#E7EFF6;--marge:#D4574E;
+  --encre:#1F3566;--rouge:#C0392B;--crayon:#615D55;--ardoise:#2B4238;
+  --craie:#F1EFE3;--jaune:#FFE873;--bureau:#23262B;--gouttiere:4.6rem;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Karla',system-ui,sans-serif;color:#23304F;background:var(--bureau);
+  font-size:17.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.papier{
+  background-color:var(--papier);
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 31px, var(--ligne) 31px 32px),
+    repeating-linear-gradient(to bottom, transparent 0 7.75px, var(--interligne) 7.75px 8px),
+    repeating-linear-gradient(to right, transparent 0 31px, var(--interligne) 31px 32px);
+}
+.barre{position:sticky;top:0;z-index:40;background:rgba(25,28,32,.95);
+  border-bottom:1px solid rgba(255,255,255,.09);color:var(--craie)}
+.barre-in{max-width:900px;margin:0 auto;padding:.62rem 1.1rem;display:flex;align-items:center;gap:.85rem}
+.barre-nom{font-family:'Caveat',cursive;font-size:1.35rem;font-weight:700;line-height:1.15;flex:1}
+.barre-in a{color:var(--craie);text-decoration:none;font-size:.82rem;font-weight:700;
+  border:1px solid rgba(255,255,255,.3);padding:.28rem .7rem;border-radius:3px;white-space:nowrap}
+.barre-in a:hover{background:rgba(255,255,255,.12)}
+
+.bureau{padding:2.2rem 1rem 4rem}
+.cahier{position:relative;max-width:860px;margin:0 auto;
+  box-shadow:0 3px 8px rgba(0,0,0,.4), 0 28px 60px rgba(0,0,0,.35)}
+.filet{position:absolute;top:0;bottom:0;left:var(--gouttiere);width:2px;background:var(--marge);opacity:.7}
+section{position:relative;z-index:2;padding:3rem 2.6rem 3rem calc(var(--gouttiere) + 1.5rem);scroll-margin-top:70px}
+section + section{border-top:1px solid rgba(31,53,102,.12)}
+
+h1{font-family:'Caveat',cursive;font-weight:700;font-size:clamp(2.3rem,7.5vw,3.4rem);
+  line-height:1;color:var(--encre);margin-bottom:.1rem}
+.chapeau{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--rouge);
+  display:inline-block;transform:rotate(-.7deg);margin-bottom:1.5rem}
+h2{font-family:'Caveat',cursive;font-size:2rem;font-weight:700;color:var(--encre);margin-bottom:.5rem}
+h3{font-family:'Caveat',cursive;font-size:1.6rem;font-weight:600;margin:1.7rem 0 .3rem;color:var(--encre)}
+p{margin:0 0 1rem;max-width:60ch}
+section > p:last-child{margin-bottom:0}
+strong{font-weight:700}
+em{font-style:italic;color:var(--crayon)}
+.surligne{background:linear-gradient(transparent 56%, var(--jaune) 56% 93%, transparent 93%);padding:0 .1em}
+a{color:var(--encre);text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:var(--rouge)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;background:#EDF1F7;
+  padding:.06em .32em;border-radius:3px;word-break:break-all}
+
+/* etapes numerotees */
+ol.etapes{list-style:none;counter-reset:e;margin:1rem 0}
+ol.etapes li{position:relative;counter-increment:e;padding-left:3rem;margin-bottom:1.3rem;max-width:58ch}
+ol.etapes li::before{
+  content:counter(e);position:absolute;left:0;top:-.1em;
+  width:2.05rem;height:2.05rem;border-radius:50%;
+  background:var(--encre);color:var(--papier);
+  font-family:'Caveat',cursive;font-size:1.5rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+ol.etapes b{display:block;font-size:1.02rem}
+
+ul.puces{list-style:none;margin:.5rem 0 1rem}
+ul.puces li{position:relative;padding-left:1.1rem;margin-bottom:.5rem;max-width:58ch}
+ul.puces li::before{content:"";position:absolute;left:0;top:.78em;width:5px;height:5px;
+  border-radius:50%;background:var(--encre);opacity:.5}
+
+.alerte{
+  position:relative;background:var(--jaune);padding:1.15rem 1.3rem;margin:1.6rem 0;max-width:33rem;
+  transform:rotate(-.8deg);box-shadow:3px 4px 10px rgba(0,0,0,.22);
+  font-family:'Caveat',cursive;font-size:1.42rem;line-height:1.3;color:#2A2A2A;
+}
+.alerte::before{content:"";position:absolute;top:-11px;left:50%;margin-left:-38px;width:76px;height:22px;
+  background:rgba(233,228,205,.78);transform:rotate(-2deg)}
+.alerte p{font-family:inherit;font-size:inherit;margin:0;max-width:none}
+
+.probleme{border-left:3px solid var(--marge);padding-left:1.05rem;margin:1.5rem 0}
+.probleme h3{margin-top:0}
+
+.aide{
+  background-color:var(--ardoise);
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);background-size:4px 4px;
+  color:var(--craie);padding:1.8rem 1.6rem;margin:1.6rem 0 .4rem;
+  border:9px solid #6B4A2B;box-shadow:0 8px 20px rgba(0,0,0,.3), inset 0 0 40px rgba(0,0,0,.35);
+  transform:rotate(-.5deg);
+}
+.aide h2,.aide p,.aide li{color:var(--craie)}
+.aide a{color:#FFD979}
+.aide ul.puces li::before{background:var(--craie)}
+
+.bouton{display:inline-block;margin-top:1rem;font-family:'Caveat',cursive;font-size:1.55rem;
+  color:var(--papier);background:#1F7A4C;text-decoration:none;padding:.3rem 1.3rem .45rem;
+  transform:rotate(-1deg);box-shadow:2px 3px 7px rgba(0,0,0,.22)}
+.bouton:hover{background:var(--encre);color:var(--papier)}
+
+footer{max-width:860px;margin:0 auto;padding:1.4rem .4rem 0;font-size:.8rem;color:#8A8579}
+footer p{max-width:none;margin-bottom:.3rem}
+footer a{color:#B9B2A2}
+
+@media (max-width:600px){
+  :root{--gouttiere:2.7rem}
+  body{font-size:16.5px}
+  .bureau{padding:1rem .55rem 2.5rem}
+  section{padding:2.2rem 1.1rem 2.2rem calc(var(--gouttiere) + .9rem)}
+  .aide{padding:1.4rem 1.1rem;border-width:7px}
+}
+</style>
+</head>
+<body>
+
+<header class="barre">
+  <div class="barre-in">
+    <div class="barre-nom">Les Enfants de l'École Marguerite Long</div>
+    <a href="/">Retour au site</a>
+  </div>
+</header>
+
+<div class="bureau">
+<div class="cahier papier">
+  <div class="filet"></div>
+
+  <section>
+    <h1>Paris Classe Numérique</h1>
+    <div class="chapeau">le guide pour s'y connecter sans y passer la soirée</div>
+
+    <p>Paris Classe Numérique, souvent abrégé PCN, est l'espace en ligne de l'école. C'est par là que passent les messages des enseignants, les informations de la classe et les documents.</p>
+    <p>Beaucoup de familles bloquent au moment de la première connexion. <span class="surligne">Dans presque tous les cas, c'est pour la même raison</span>, et elle est écrite juste en dessous.</p>
+
+    <div class="alerte">
+      <p>L'erreur numéro 1 : essayer d'activer son compte directement dans l'application. Ça ne marche pas. La toute première connexion doit se faire depuis un navigateur, Safari ou Chrome. L'application ne fonctionne qu'après.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>La première connexion, pas à pas</h2>
+
+    <ol class="etapes">
+      <li>
+        <b>Récupérez vos identifiants parent auprès de l'école.</b>
+        Ils sont remis en début d'année, sur papier. Attention, le compte parent et le compte de votre enfant sont deux comptes différents. Si vous n'avez rien reçu, demandez-les à la directrice, elle peut les rééditer.
+      </li>
+      <li>
+        <b>Ouvrez votre navigateur, pas l'application.</b>
+        Safari sur iPhone, Chrome sur Android, ou n'importe quel navigateur sur ordinateur. Allez sur <code>ent.parisclassenumerique.fr</code>
+      </li>
+      <li>
+        <b>Saisissez l'identifiant et le mot de passe provisoire</b> figurant sur le papier remis par l'école. Recopiez-les exactement, sans espace ajouté, en respectant les majuscules.
+      </li>
+      <li>
+        <b>Choisissez votre vrai mot de passe.</b>
+        Le site vous le demande immédiatement. Le mot de passe provisoire ne servira plus jamais. Notez le nouveau quelque part.
+      </li>
+      <li>
+        <b>Renseignez une adresse mail.</b>
+        Cette étape paraît facultative, elle ne l'est pas. Sans adresse mail valide, vous ne pourrez pas récupérer votre mot de passe tout seul en cas d'oubli, et il faudra repasser par l'école.
+      </li>
+      <li>
+        <b>Installez l'application seulement maintenant.</b>
+        Cherchez <strong>Paris Classe Numérique</strong> dans l'App Store ou sur Google Play. Connectez-vous avec l'identifiant et le mot de passe que vous venez de choisir.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Si ça coince</h2>
+
+    <div class="probleme">
+      <h3>L'application refuse ma connexion</h3>
+      <p>Neuf fois sur dix, le compte n'a jamais été activé sur le navigateur. Reprenez à l'étape 2 ci-dessus, activez sur <code>ent.parisclassenumerique.fr</code>, puis réessayez dans l'application.</p>
+    </div>
+
+    <div class="probleme">
+      <h3>J'ai perdu mon mot de passe</h3>
+      <p>Sur la page de connexion, utilisez le lien mot de passe oublié. La réinitialisation se fait par mail. Si aucune adresse mail n'est enregistrée sur votre compte, cette procédure ne fonctionnera pas et il faudra demander une réinitialisation à l'école.</p>
+    </div>
+
+    <div class="probleme">
+      <h3>Je n'ai jamais reçu mes codes</h3>
+      <p>Ça arrive souvent, notamment quand un enfant change d'école ou quand les deux parents ne sont pas au même foyer. Chaque parent peut avoir son propre compte. Demandez-les à la directrice.</p>
+    </div>
+
+    <div class="probleme">
+      <h3>Je vois les devoirs mais pas les messages</h3>
+      <p>Vous êtes probablement connecté avec le compte de votre enfant. Le compte parent donne accès à la messagerie avec l'équipe enseignante, le compte élève non. Déconnectez-vous et reconnectez-vous avec vos identifiants à vous.</p>
+    </div>
+
+    <div class="probleme">
+      <h3>La page de connexion me paraît bizarre</h3>
+      <p>Vérifiez toujours l'adresse avant de taper votre mot de passe. La bonne adresse est <code>ent.parisclassenumerique.fr</code>. Ne saisissez jamais vos identifiants depuis un lien reçu par SMS ou par message.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="aide">
+      <h2>Toujours bloqué ? On vous aide.</h2>
+      <p>Pas besoin d'attendre une permanence à un horaire précis. Écrivez-nous quand vous voulez, on répond.</p>
+      <ul class="puces">
+        <li>Par mail, <a href="mailto:contact@eeml.fr">contact@eeml.fr</a></li>
+        <li>Par téléphone ou SMS, <a href="tel:+33614912105">06 14 91 21 05</a></li>
+        <li>Dans la communauté WhatsApp des parents de l'école</li>
+        <li>En vrai, à la sortie de l'école, avec votre téléphone en main</li>
+      </ul>
+      <p>Et si vous n'êtes pas à l'aise avec tout ça, dites-le simplement. Personne ne devrait rater un message de l'enseignante parce qu'une application est mal fichue.</p>
+      <a class="bouton" href="https://chat.whatsapp.com/GuPkZZxuNqxIIUmE8erTiU" target="_blank" rel="noopener">Rejoindre la communauté WhatsApp</a>
+    </div>
+
+    <p><em>Cette page est tenue à jour par l'association. Si une étape a changé de votre côté, signalez-le nous, on corrige.</em></p>
+  </section>
+
+</div>
+
+<footer>
+  <p>Les Enfants de l'École Marguerite Long, association déclarée W751282766, école Marguerite Long, Paris 17e.</p>
+  <p><a href="/">Retour au site de l'association</a></p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var SB='https://bxdnxnwbslykpgfsdltg.supabase.co';
+  var KEY='sb_publishable_gG8DLCGoOZ1fUBBx566k1w_BlW-eZth';
+  var sid,vid;
+  function nid(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
+  try{sid=sessionStorage.getItem('eeml_sid');if(!sid){sid=nid();sessionStorage.setItem('eeml_sid',sid);}}catch(e){sid='a'+Date.now();}
+  try{vid=localStorage.getItem('eeml_vid');if(!vid){vid=nid();localStorage.setItem('eeml_vid',vid);}}catch(e){vid=sid;}
+  function appareil(){var u=navigator.userAgent;
+    if(/iPad|Tablet/i.test(u))return 'tablette';
+    if(/Mobi|Android|iPhone/i.test(u))return 'mobile';return 'ordinateur';}
+  var d={evenement:'vue',chemin:'/pcn',session_id:sid,visiteur_id:vid,appareil:appareil(),
+         referent:(document.referrer||'').replace(/^https?:\/\//,'').split('/')[0]};
+  fetch('/api/visite',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(d)}).catch(function(){});
+})();
+</script>
+</body>
+</html>
