@@ -21,3 +21,4 @@ Sur Vercel, laisser les réglages par défaut, Framework Preset « Other ».
 ## Contact
 
 contact@eeml.fr
+<!-- deploiement 20260914191717 -->
